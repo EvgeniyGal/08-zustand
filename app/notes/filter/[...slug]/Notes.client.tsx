@@ -37,11 +37,12 @@ export default function NotesClient({ tag }: NotesClientProps) {
     updateDebouncedSearch(value);
   };
 
-  const { data, isLoading, isError, isSuccess, isFetching } = useQuery({
-    queryKey: ['notes', debouncedSearch, page, tag],
-    queryFn: () => fetchNotes({ page, search: debouncedSearch, tag: apiTag }),
-    placeholderData: keepPreviousData,
-  });
+  const { data, isLoading, isError, isSuccess, isFetching, isPlaceholderData } =
+    useQuery({
+      queryKey: ['notes', debouncedSearch, page, tag],
+      queryFn: () => fetchNotes({ page, search: debouncedSearch, tag: apiTag }),
+      placeholderData: keepPreviousData,
+    });
 
   const notes = data?.notes ?? [];
   const totalPages = data?.totalPages ?? 0;
@@ -53,10 +54,14 @@ export default function NotesClient({ tag }: NotesClientProps) {
   }, [tag]);
 
   useEffect(() => {
-    if (!isFetching && isSuccess && notes.length === 0) {
-      toast.error('No notes found for your request.', { id: 'no-notes-found' });
-    }
-  }, [isFetching, isSuccess, notes.length, tag, debouncedSearch, page]);
+    toast.dismiss('no-notes-found');
+  }, [tag, debouncedSearch, page]);
+
+  useEffect(() => {
+    if (isFetching || isPlaceholderData || !isSuccess || notes.length > 0) return;
+
+    toast.error('No notes found for your request.', { id: 'no-notes-found' });
+  }, [isFetching, isPlaceholderData, isSuccess, notes.length, tag, debouncedSearch, page]);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
