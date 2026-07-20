@@ -1,6 +1,6 @@
-# NoteHub
+# NoteHub — Advanced Routing
 
-Next.js (App Router) app for managing personal notes with search, pagination, create and delete.
+Next.js (App Router) app for managing personal notes with search, pagination, tag filtering, and modal note preview.
 
 ## Setup
 
@@ -32,5 +32,13 @@ npm run dev
 ## Routes
 
 - `/` — home page
-- `/notes` — notes list (SSR prefetch + CSR)
-- `/notes/[id]` — note details (SSR prefetch + CSR)
+- `/notes/filter/all` — all notes (SSR prefetch + CSR)
+- `/notes/filter/{tag}` — notes filtered by tag (Todo, Work, Personal, Meeting, Shopping)
+- `/notes/[id]` — note details page (direct access)
+- `/notes/[id]` — note preview modal (intercepting route when navigating from the list)
+
+## Features
+
+- **404 page** — custom not-found page for invalid routes
+- **Parallel routes** — sidebar tag filter (`@sidebar`) updates independently from the notes list
+- **Intercepting routes** — note details open in a modal without leaving the current filter view

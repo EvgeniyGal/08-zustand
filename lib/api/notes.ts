@@ -1,21 +1,11 @@
-import axios from 'axios';
 import type { Note, NewNote } from '@/types/note';
-
-const BASE_URL = 'https://notehub-public.goit.study/api';
-
-const notehubToken = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
-
-const api = axios.create({
-  baseURL: BASE_URL,
-  headers: {
-    Authorization: `Bearer ${notehubToken}`,
-  },
-});
+import { api } from './client';
 
 export interface FetchNotesParams {
   page: number;
   search?: string;
   perPage?: number;
+  tag?: string;
 }
 
 export interface FetchNotesResponse {
@@ -27,6 +17,7 @@ export const fetchNotes = async ({
   page,
   search = '',
   perPage = 12,
+  tag,
 }: FetchNotesParams): Promise<FetchNotesResponse> => {
   const params: Record<string, string | number> = {
     page,
@@ -35,6 +26,10 @@ export const fetchNotes = async ({
 
   if (search.trim()) {
     params.search = search.trim();
+  }
+
+  if (tag) {
+    params.tag = tag;
   }
 
   const response = await api.get<FetchNotesResponse>('/notes', { params });

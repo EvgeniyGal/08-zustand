@@ -14,11 +14,17 @@ import Loader from '@/components/Loader/Loader';
 import ErrorMessage from '@/components/ErrorMessage/ErrorMessage';
 import css from './NotesPage.module.css';
 
-export default function NotesClient() {
+interface NotesClientProps {
+  tag: string;
+}
+
+export default function NotesClient({ tag }: NotesClientProps) {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const apiTag = tag && tag !== 'all' ? tag : undefined;
 
   const updateDebouncedSearch = useDebouncedCallback((value: string) => {
     setDebouncedSearch(value);
@@ -32,13 +38,19 @@ export default function NotesClient() {
   };
 
   const { data, isLoading, isError, isSuccess } = useQuery({
-    queryKey: ['notes', debouncedSearch, page],
-    queryFn: () => fetchNotes({ page, search: debouncedSearch }),
+    queryKey: ['notes', debouncedSearch, page, tag],
+    queryFn: () => fetchNotes({ page, search: debouncedSearch, tag: apiTag }),
     placeholderData: keepPreviousData,
   });
 
   const notes = data?.notes ?? [];
   const totalPages = data?.totalPages ?? 0;
+
+  useEffect(() => {
+    setPage(1);
+    setSearch('');
+    setDebouncedSearch('');
+  }, [tag]);
 
   useEffect(() => {
     if (isSuccess && notes.length === 0) {
