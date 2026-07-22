@@ -59,6 +59,15 @@
   justify-content: space-between;
   align-items: center;
   margin-top: auto;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
 }
 
 .tag {
