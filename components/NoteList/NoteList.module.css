@@ -101,3 +101,49 @@
 .link:hover {
   background-color: #0b5ed7;
 }
+
+.confirm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.confirmTitle {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #212529;
+}
+
+.confirmText {
+  margin: 0;
+  font-size: 16px;
+  color: #495057;
+}
+
+.confirmActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.cancelButton {
+  padding: 6px 12px;
+  font-size: 14px;
+  color: #212529;
+  background-color: #f8f9fa;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.cancelButton:hover {
+  background-color: #e2e6ea;
+}
+
+.cancelButton:disabled,
+.button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
