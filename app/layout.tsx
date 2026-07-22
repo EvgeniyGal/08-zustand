@@ -1,13 +1,28 @@
 import type { Metadata } from 'next';
+import { Roboto } from 'next/font/google';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 import TanStackProvider from '@/components/TanStackProvider/TanStackProvider';
+import {
+  DEFAULT_DESCRIPTION,
+  SITE_NAME,
+  SITE_URL,
+  buildOpenGraph,
+} from '@/lib/metadata';
 import './globals.css';
 
-export const metadata: Metadata = {
-  title: 'NoteHub',
-  description: 'A simple and efficient application for managing personal notes',
-};
+const roboto = Roboto({
+  weight: ['400', '700'],
+  variable: '--font-roboto',
+  display: 'swap',
+  subsets: ['latin'],
+});
+
+export const metadata: Metadata = buildOpenGraph({
+  title: SITE_NAME,
+  description: DEFAULT_DESCRIPTION,
+  url: SITE_URL,
+});
 
 export default function RootLayout({
   children,
@@ -18,7 +33,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body className={roboto.variable}>
         <TanStackProvider>
           <Header />
           {children}
